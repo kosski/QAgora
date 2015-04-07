@@ -25,7 +25,7 @@ namespace QAgoraForum.Controllers
 
 
         // GET: Topics/Details/5
-
+        
         // GET: Topics/Create
         public ActionResult Create(int sectionId)
         {
@@ -41,15 +41,8 @@ namespace QAgoraForum.Controllers
         public async Task<ActionResult> Create(Topic topic, int sectionId)
         {            
             string owner = User.Identity.GetUserId();
-            topic.Owner = db.Users.FirstOrDefault(m => m.Id.Equals(owner));
-            topic.IsOpen = true;
-            topic.SectionId = await db.Sections.FirstOrDefaultAsync(s=>s.Id.Equals(sectionId));
-            topic.Date= DateTime.Now;
-                db.Topics.Add(topic);
-                await db.SaveChangesAsync();
-                XmlPost newTopic=new XmlPost{ id=topic.Id, Date=DateTime.Now, Owner= owner, content=topic.PrimaryPost};
-                XmlPost.addPost(newTopic, topic.Id);
-                return RedirectToAction("Index", new { id=topic.Id });   
+            respository.createNewTopic(topic, sectionId, owner);
+            return RedirectToAction("Index", new { id=topic.Id });   
         }
 
         // GET: Topics/Edit/5

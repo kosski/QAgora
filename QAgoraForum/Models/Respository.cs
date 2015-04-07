@@ -257,6 +257,21 @@ namespace QAgoraForum.Models
             }
         }
 
+        public bool createNewTopic(Topic topic, int sectionId,string userId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                topic.Owner = this.getUser(userId);
+                topic.IsOpen = true;
+                topic.SectionId = this.GetSection(sectionId);
+                topic.Date = DateTime.Now;
+                dbContext.Topics.Add(topic);
+                XmlPost newTopic = new XmlPost { id = topic.Id, Date = DateTime.Now, Owner = userId, content = topic.PrimaryPost };
+                XmlPost.addPost(newTopic, topic.Id);
+                dbContext.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }
