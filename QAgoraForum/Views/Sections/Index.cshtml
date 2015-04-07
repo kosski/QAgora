@@ -1,0 +1,77 @@
+﻿@model IEnumerable<QAgoraForum.Models.SectionPanel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <img src="~/DefaultLayout/logo.jpg" alt="Forum Logo" class="img-responsive logo col-md-12" />
+</div>
+<div class="panel panel-default">   
+        @Html.Action("AdminPanel")
+    <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true" data-collapse-type="manual">
+        @foreach (QAgoraForum.Models.SectionPanel item in Model)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id=@("heading"+item.GetHashCode().ToString())>
+                    <div class="row">
+                        <span class="glyphicon glyphicon-search col-md-2 btn-lg" aria-hidden="true"></span>
+                        <div class="col-md-2 col-md-offset-2"><h5><b>@item.Name</b></h5></div>
+                        <div class="col-md-offset-5 col-md-1" data-toggle="collapse" href=@("#"+item.GetHashCode().ToString())>
+                            <button id="toggleButton" class="btn btn-success"> <span id="arrow" class="glyphicon glyphicon-arrow-up col-md-1" aria-hidden="false"></span> </button>
+                        </div>
+                    </div>
+                </div>
+                <div id=@item.GetHashCode().ToString() class="panel-collapse collapse in" role="tabpanel" aria-labelledby=@("heading"+item.GetHashCode().ToString())>
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Topics</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tbody>
+                                @foreach (QAgoraForum.Models.Section Section in item.Sections)
+                                {
+
+                                    <tr class="clickable-row" data-href=@Url.Action("Details", new { Id=Section.Id })>
+                                        <td><span class="glyphicon glyphicon-search col-md-1" aria-hidden="true"></span></td>
+                                        <td>@Section.Title</td>
+                                        <td>@Section.Description</td>
+                                        <td>@Section.Topics.Count</td>
+                                        <td>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                @Html.ActionLink(" ", "Edit", new { Id = Section.Id }, new { @class = "btn btn-default glyphicon glyphicon-edit" })
+                                                @Html.ActionLink(" ", "Delete", new { Id = Section.Id }, new { @class = "btn btn-default glyphicon glyphicon-trash" })
+                                            }
+
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-success").click(function () {
+            if ($(this).children("span").hasClass("glyphicon-arrow-down")) {
+                $(this).children("span").addClass("glyphicon-arrow-up").removeClass("glyphicon-arrow-down");
+            } else {
+                $(this).children("span").addClass("glyphicon-arrow-down").removeClass("glyphicon-arrow-up");
+            };
+        });
+
+        $(".clickable-row").click(function () {
+            window.document.location = $(this).data("href");
+        });
+    });   
+</script>

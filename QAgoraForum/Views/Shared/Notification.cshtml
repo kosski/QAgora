@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Notification";
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@{ if (User.Identity.IsAuthenticated)
+ {
+        <!-- notificatoin dropdown start-->
+        <ul class="nav pull-right top-menu navbar-nav">
+            <!-- task notificatoin start -->           
+            <!-- task notificatoin end -->
+            <!-- inbox notificatoin start-->
+            <li id="mail_notificatoin_bar" class="dropdown">@Html.Action( "mail_notification","Home")</li>
+            <!-- inbox notificatoin end -->
+            <!-- alert notification start-->
+            <li id="alert_notificatoin_bar" class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <i class="icon-bell-l"></i>
+                    <span class="badge bg-important">7</span>
+                </a>
+                <ul class="dropdown-menu extended notification">
+                    <div class="notify-arrow notify-arrow-blue"></div>
+                    <li>
+                        <p class="blue">You have 4 new notifications</p>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="label label-success"><i class="icon_like"></i></span>
+                            Mick appreciated your work.
+                            <span class="small italic pull-right"> Today</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">See all notifications</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- alert notification end-->
+            <!-- user login dropdown start-->
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <span class="profile-ava">
+                        <img alt="" style=" height: 50px; width: 50px; margin: -15px 10px -15px 0px;" src=@Url.Content("/DefaultLayout/Avatars/" + @User.Identity.Name + "-avatar.jpg")>
+                    </span>
+                    <span class="username">@User.Identity.Name</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout ">
+                    <div class="log-arrow-up"></div>
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </li>
+            <!-- user login dropdown end -->
+        </ul>
+        <!-- notificatoin dropdown end-->
+
+ }
+   else
+   {
+       #region Guest
+
+    <div class="pull-right top-nav navbar-nav" id="nav">
+        <ul class="nav pull-right top-menu">
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <span class="username">Gość</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout" id="login_menu">
+                    <div class="log-arrow-up"></div>
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </li>
+        </ul>
+    </div>
+       #endregion
+   }
+
+}
+

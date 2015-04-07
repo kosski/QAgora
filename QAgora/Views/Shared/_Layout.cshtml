@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title — AgoraForum</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <header class="navbar navbar-inverse navbar-fixed-top">
+        <div class=" container">
+
+            <!--logo start-->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">QAgora</a>
+            </div>
+            <!--logo end-->
+            <div class="nav search-row" id="top_menu">
+                <!--  search form start -->
+                <ul class="nav top-menu">
+                    <li>
+                        <form class="navbar-form">
+                            <input class="form-control" placeholder="Search" type="text">
+                        </form>
+                    </li>
+                </ul>
+                <!--  search form end -->
+            </div>
+           @Html.Partial("Notification")
+        </div>
+    </header>
+
+
+
+    <section id="main-content">
+        <section class="container">
+            <!-- page start-->
+            @RenderBody();
+            <!-- page end-->
+        </section>
+    </section>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+

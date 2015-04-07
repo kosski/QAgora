@@ -1,0 +1,13 @@
+﻿@model bool
+@if(Model)
+{
+    <div class="btn-group btn-group-sm">
+        <button class="btn btn-info">@Html.ActionLink("New Section", "Create")</button>
+        <button class="btn btn-info">@Html.ActionLink("New Section Panel", "CreateSectionPanel")</button>
+        
+    </div>
+    
+}else
+{
+    <p>Witamy Na forum!</p>
+}
