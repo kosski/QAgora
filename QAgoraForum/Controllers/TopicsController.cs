@@ -15,7 +15,6 @@ namespace QAgoraForum.Controllers
 {
     public class TopicsController : Controller
     {
-        //private ApplicationDbContext db = new ApplicationDbContext();
         Respository respository= new Respository();
         public async Task<ActionResult> Index(int id)
         {
@@ -52,7 +51,7 @@ namespace QAgoraForum.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Topic topic = await db.Topics.FindAsync(id);
+            Topic topic = respository.GetTopic(id.Value);
             if (topic == null)
             {
                 return HttpNotFound();
@@ -69,8 +68,7 @@ namespace QAgoraForum.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(topic).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                respository.EditTopic(topic);
                 return RedirectToAction("Index");
             }
             return View(topic);
@@ -83,7 +81,7 @@ namespace QAgoraForum.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Topic topic = await db.Topics.FindAsync(id);
+            Topic topic = respository.GetTopic(id.Value);
             if (topic == null)
             {
                 return HttpNotFound();
@@ -96,19 +94,8 @@ namespace QAgoraForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Topic topic = await db.Topics.FindAsync(id);
-            db.Topics.Remove(topic);
-            await db.SaveChangesAsync();
+            respository.DeleteTopic(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
