@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
@@ -261,17 +262,61 @@ namespace QAgoraForum.Models
         {
             using (var dbContext = new ApplicationDbContext())
             {
-                topic.Owner = this.getUser(userId);
-                topic.IsOpen = true;
-                topic.SectionId = this.GetSection(sectionId);
-                topic.Date = DateTime.Now;
-                dbContext.Topics.Add(topic);
-                XmlPost newTopic = new XmlPost { id = topic.Id, Date = DateTime.Now, Owner = userId, content = topic.PrimaryPost };
-                XmlPost.addPost(newTopic, topic.Id);
-                dbContext.SaveChanges();
+                try
+                {
+                    topic.Owner = dbContext.Users.Find(userId);
+                    topic.IsOpen = true;
+                    topic.SectionId = this.GetSection(sectionId);
+                    topic.Date = DateTime.Now;
+                    dbContext.Topics.Add(topic);
+                    XmlPost newTopic = new XmlPost { id = topic.Id, Date = DateTime.Now, Owner = userId, content = topic.PrimaryPost };
+                    dbContext.SaveChanges();
+                    XmlPost.addPost(newTopic, topic.Id);
+
+                    return true;
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public Topic GetTopic(int Id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return dbContext.Topics.Find(Id);
             }
         }
 
+        public bool EditTopic(Topic topic)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                dbContext.Entry(topic).State = EntityState.Modified;
+                dbContext.SaveChanges();
+                return true;
+            }
+        }
+
+        public async Task<bool> DeleteTopic(int id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                Topic topic = await dbContext.Topics.FindAsync(id);
+                dbContext.Topics.Remove(topic);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+        }
         #endregion
     }
 }
