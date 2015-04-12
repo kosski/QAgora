@@ -1,0 +1,44 @@
+﻿@model QAgoraForum.Models.LoginViewModel
+<div class=" col-md-4">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <h4>Zaloguj się</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserName)
+
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password)
+
+
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                </div>
+
+            </div>
+
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Zaloguj" class="btn btn-default" />
+            </div>
+
+            <hr />
+            <section id="socialLoginForm">
+                @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+            </section>
+
+            <hr />
+            @Html.ActionLink("Rejestruj", "Register"), jeśli nie masz konta lokalnego.
+
+
+        </div>
+    }
+</div>
