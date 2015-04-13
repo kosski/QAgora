@@ -41,22 +41,11 @@
             <!-- page end-->
         </section>
     </section>
-    <div id="modalPlace"></div>
-    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(".jqte").jqte();
-    </script>
-    <script type="text/javascript">
-        $('#registerLink').click(function () {
-            $.ajax({
-                type: "GET",
-                url: '/Home/_modalWindow/_login'
-            }).success(function (data) {
-                $('#modalPlace').html(data);
-            });
-        })
-    </script>
-
-    @RenderSection("scripts", required: false)
+    @Html.Partial("_modalWindow")
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+@RenderSection("scripts", required: false)
+<script type="text/javascript">
+    start();
+</script>
 </body>
 </html>

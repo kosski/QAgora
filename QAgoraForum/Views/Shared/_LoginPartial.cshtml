@@ -1,19 +1,20 @@
 ﻿@using Microsoft.AspNet.Identity
-
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+<div id="LoginPartial">
+    @if (Request.IsAuthenticated)
     {
-        @Html.AntiForgeryToken()
-    <li class="eborder-top hvr-sweep-to-bottom">
-        @Html.ActionLink("Twoje konto", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Zarządzanie" })
-    </li>
-    <li class="hvr-sweep-to-bottom"><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <li class="eborder-top hvr-sweep-to-bottom">
+                @Html.ActionLink("Twoje konto", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Zarządzanie" })
+            </li>
+            <li class="hvr-sweep-to-bottom"><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+        }
     }
-}
-else
-{
-    <li class="eborder-top hvr-sweep-to-bottom"><a href="#" id="registerLink">ZalogujPartial</a></li>
-    <li class="hvr-sweep-to-bottom">@Html.ActionLink("Zaloguj", "Login", "Account", routeValues: null, htmlAttributes: new {id = "loginLink"})</li>
+    else
+    {
+        <li class="eborder-top hvr-sweep-to-bottom"><a href="#" id="registerLink">Zaloguj</a></li>
+        <li class="hvr-sweep-to-bottom">@Html.ActionLink("Zarejestruj", "Register", "Account")</li>
 
-}
+    }
+</div>

@@ -23,16 +23,6 @@ namespace QAgoraForum.Controllers
                 return PartialView("_mail_notification", messages);         
         }
 
-        public PartialViewResult _Login()
-        {
-            return PartialView();
-        }
-
-        public PartialViewResult _modalWindow(string action)
-        {
-            return PartialView(action);
-        }
-
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Sections", null);
