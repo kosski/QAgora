@@ -341,6 +341,14 @@ namespace QAgoraForum.Controllers
             base.Dispose(disposing);
         }
 
+        [AllowAnonymous]
+        public PartialViewResult _LoginPartialView(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return PartialView();
+        }
+
+
         #region Pomocnicy
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

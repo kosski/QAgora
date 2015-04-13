@@ -10,7 +10,8 @@ namespace QAgoraForum
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/JQTE/jquery-te-1.4.0.min.js"));
+                        "~/Scripts/JQTE/jquery-te-1.4.0.min.js",
+                        "~/Scripts/QAgoraScripts.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
