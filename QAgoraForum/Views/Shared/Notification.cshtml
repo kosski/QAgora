@@ -8,8 +8,6 @@
  {
         <!-- notificatoin dropdown start-->
         <ul class="nav pull-right top-menu navbar-nav">
-            <!-- task notificatoin start -->           
-            <!-- task notificatoin end -->
             <!-- inbox notificatoin start-->
             <li id="mail_notificatoin_bar" class="dropdown">@Html.Action( "mail_notification","Home")</li>
             <!-- inbox notificatoin end -->
@@ -57,9 +55,7 @@
 
  }
    else
-   {
-       #region Guest
-
+   {      
     <div class="pull-right top-nav navbar-nav" id="nav">
         <ul class="nav pull-right top-menu">
             <li class="dropdown">
@@ -74,7 +70,6 @@
             </li>
         </ul>
     </div>
-       #endregion
    }
 
 }

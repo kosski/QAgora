@@ -1,0 +1,9 @@
+﻿@model QAgoraForum.Models.ApplicationUser
+
+<div>
+    <img alt="" class="row" src=@Url.Content("/DefaultLayout/Avatars/" + @Model.UserName + "-avatar.jpg")>
+    <label>Liczba postów: </label>
+    @Html.DisplayTextFor(u=>u.TopicsOwner.Count)
+
+    @Html.ActionLink("Napisz wiadomość","Create","Messages",new { Id=Model.Id })
+</div>
