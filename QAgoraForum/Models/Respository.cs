@@ -270,9 +270,8 @@ namespace QAgoraForum.Models
                     topic.Date = DateTime.Now;
                     dbContext.Topics.Add(topic);
                     XmlPost newTopic = new XmlPost { id = topic.Id, Date = DateTime.Now, Owner = userId, content = topic.PrimaryPost };
-                    dbContext.SaveChanges();
                     XmlPost.addPost(newTopic, topic.Id);
-
+                    dbContext.SaveChanges();
                     return true;
                 }
                 catch (DbEntityValidationException dbEx)

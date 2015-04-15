@@ -153,7 +153,7 @@ namespace QAgoraForum.Controllers
         public ActionResult Details(int Id)
         {
             List<Topic> topics = respository.GetSectionTopics(Id);
-            ViewBag.Title = topics.FirstOrDefault().SectionId.Title;
+            ViewBag.Title = respository.GetSection(Id);
             ViewBag.SectionID = Id;
             return View(topics);
         }

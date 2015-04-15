@@ -1,4 +1,5 @@
-﻿@model List<QAgoraForum.Models.Message>
+﻿@using System.Collections
+@model List<QAgoraForum.Models.Message>
 
 
 <button data-toggle="dropdown" class="dropdown-toggle btn btn-default navbar-btn" href="#">
@@ -10,19 +11,23 @@
 </button>
 <ul class="dropdown-menu extended inbox">
     <div class="log-arrow-up"></div>
-        <li class="eborder-top"><b>Messages</b></li>
-        @if(Model.Count>0)
-        { 
-            foreach (var item in Model)
-            {
-                <li class="hvr-sweep-to-bottom"> <div style="font-weight:bold;">@item.From</div><div>@item.content ...</div> </li>
-            }
-        }
-        else
+    <li class="eborder-top"><b>Messages</b></li>
+    @if (Model.Count > 0)
+    {
+        foreach (var item in Model)
         {
-            <p>Brak nowych wiadomości</p>
+            <li id="mailNotify" class="hvr-sweep-to-bottom">
+                <div style="font-weight: bold;">@item.From</div>
+                <div>@item.content ...</div> 
+            </li>
         }
-     <li>
-        @Html.ActionLink("Wszystkie wiadomości","Index","Messages",null,null)
+    }
+    else
+    {
+        <p>Brak nowych wiadomości</p>
+    }
+    <li class="hvr-sweep-to-bottom">
+        @Html.ActionLink("Wszystkie wiadomości", "Index", "Messages", null, null)
     </li>
 </ul>
+
