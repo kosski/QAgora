@@ -14,7 +14,6 @@ using QAgoraForum.Engine;
 namespace QAgoraForum.Controllers
 {
     [Authorize]
-    [RequireHttps]
     public class AccountController : Controller
     {
         public AccountController()

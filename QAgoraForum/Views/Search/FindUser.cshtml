@@ -1,0 +1,22 @@
+﻿@model List<string> 
+@{
+    ViewBag.Title = "FindUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>FindUser</h2>
+
+@using (@Html.BeginForm())
+{
+    @Html.Editor("userName")
+    <input type="submit" value="Search">
+}
+@if (Model != null)
+{
+    <ul>
+        @foreach (string userName in Model)
+        {
+            <li>@userName</li>
+        }
+    </ul>
+}
