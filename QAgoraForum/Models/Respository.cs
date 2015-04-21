@@ -247,6 +247,25 @@ namespace QAgoraForum.Models
 
         #endregion
 
+        #region
+
+        public List<string> FindUser(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return null;
+            }
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return dbContext.Users.Where(u => u.UserName.ToUpper().Contains(userName.ToUpper()))
+                    .Select(u => u.UserName)
+                    .OrderBy(u => u)
+                    .ToList();
+
+            }
+        }
+
+        #endregion
         #region Topics
 
         public List<XmlPost> GetPosts(int id)
