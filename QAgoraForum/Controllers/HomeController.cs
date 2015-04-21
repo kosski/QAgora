@@ -22,6 +22,7 @@ namespace QAgoraForum.Controllers
                     }
                 return PartialView("_mail_notification", messages);         
         }
+
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Sections", null);

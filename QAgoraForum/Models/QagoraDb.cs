@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -83,14 +82,14 @@ namespace QAgoraForum.Models
 
         public static void addPost(XmlPost post, int topicId)
         {
-            List<XmlPost> posts = XmlPost.getPosts(topicId);
+            List<XmlPost> posts = getPosts(topicId);
             posts.Add(post);
             XmlRootAttribute oRootAttr = new XmlRootAttribute() { ElementName = "Posts", IsNullable = true };
             XmlSerializer oSerializer = new XmlSerializer(typeof(List<XmlPost>), oRootAttr);
             StreamWriter oStreamWriter = null;
             try
             {
-                oStreamWriter = new StreamWriter("TopicsStorage/" + topicId + ".xml");
+                oStreamWriter = new StreamWriter(System.Web.HttpContext.Current.Server.MapPath("~/TopicsStorage/")+ topicId + ".xml");
                 oSerializer.Serialize(oStreamWriter, posts);
             }
             catch (Exception oException)
@@ -111,7 +110,7 @@ namespace QAgoraForum.Models
         {
             try
             {
-                StreamReader r = new StreamReader("TopicsStorage/" + id + ".xml");
+                StreamReader r = new StreamReader(System.Web.HttpContext.Current.Server.MapPath("~/TopicsStorage/") + id + ".xml");
                 XmlSerializer serializer = new XmlSerializer(typeof(List<XmlPost>));
                 List<XmlPost> result = (List<XmlPost>)serializer.Deserialize(r);
                 return (List<XmlPost>)result.ToList();

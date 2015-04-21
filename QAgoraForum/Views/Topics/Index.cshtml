@@ -7,36 +7,27 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
+
+@foreach (var item in Model)
+{
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Owner)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.content)
-        </th>
-        <th></th>
+        <td>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    @item.Date.ToUniversalTime()
+                </div>
+                <div class="panel-body">
+                    <div id="user" class="col-md-3">
+                        @Html.Action("userInfo",new { userId= item.Owner})
+                    </div>
+                    <div id="message" class="col-md-9 well">
+                        @Html.Raw(item.content)
+                    </div>
+                </div>
+            </div>
+        </td>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Owner)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.content)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
 }
 
 </table>

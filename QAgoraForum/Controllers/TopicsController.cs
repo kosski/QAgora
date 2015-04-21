@@ -13,9 +13,11 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace QAgoraForum.Controllers
 {
+    [Authorize]
     public class TopicsController : Controller
     {
         Respository respository= new Respository();
+        [AllowAnonymous]
         public async Task<ActionResult> Index(int id)
         {
             return View(respository.GetPosts(id));
@@ -94,8 +96,13 @@ namespace QAgoraForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            respository.DeleteTopic(id);
+            await respository.DeleteTopic(id);
             return RedirectToAction("Index");
+        }
+
+        public PartialViewResult userInfo(string userId)
+        {
+            return PartialView(respository.getUser(userId));
         }
     }
 }
