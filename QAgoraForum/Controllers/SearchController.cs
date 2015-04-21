@@ -19,7 +19,7 @@ namespace QAgoraForum.Controllers
         [HttpGet]
         public ActionResult FindUser()
         {
-            return View();
+            return this.View();
 
         }
 
@@ -28,7 +28,7 @@ namespace QAgoraForum.Controllers
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                return View();
+                return this.View();
             }
             return View(respository.FindUser(userName));
         }
