@@ -1,9 +1,14 @@
 ﻿@model QAgoraForum.Models.ApplicationUser
-
 <div>
-    <img alt="" class="row" src=@Url.Content("/DefaultLayout/Avatars/" + @Model.UserName + "-avatar.jpg")>
-    <label>Liczba postów: </label>
-    @Html.DisplayTextFor(u=>u.TopicsOwner.Count)
+    <div class="row">
+        <img alt="" class="row" src=@Url.Content("/DefaultLayout/Avatars/" + @Model.UserName + "-avatar.jpg")>
+    </div>
+    <div class="row">
+        <label>Liczba postów: </label>
+        @Html.DisplayTextFor(u => u.TopicsOwner.Count)
+    </div>
+    <div class="row">
 
-    @Html.ActionLink("Napisz wiadomość","Create","Messages",new { Id=Model.Id })
+        @Html.ActionLink("Napisz wiadomość", "Create", "Messages", new { Id = Model.Id })
+    </div>
 </div>
