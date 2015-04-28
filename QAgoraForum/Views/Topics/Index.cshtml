@@ -1,33 +1,58 @@
-﻿@model IEnumerable<QAgoraForum.Models.XmlPost>
+﻿@model IEnumerable<QAgoraForum.Models.Post>
 
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
 
-@foreach (var item in Model)
-{
-    <tr>
-        <td>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    @item.Date.ToUniversalTime()
-                </div>
-                <div class="panel-body">
-                    <div id="user" class="col-md-3">
-                        @Html.Action("userInfo",new { userId= item.Owner})
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        @if (item.Date != null)
+                        {
+                            @item.Date.Value.ToUniversalTime()
+                        }
                     </div>
-                    <div id="message" class="col-md-9 well">
-                        @Html.Raw(item.content)
+                    <div class="panel-body">
+                        <div id="user" class="col-md-3">
+                            @Html.Action("userInfo", new {userId = item.Owner.Id})
+                        </div>
+                        <div id="message" class="col-md-9 well">
+                            @Html.Raw(item.content)
+                        </div>
                     </div>
                 </div>
-            </div>
-        </td>
-    </tr>
+            </td>
+        </tr>
 
-}
+    }
 
 </table>
+    <button id="AnswerButton" class="btn btn-default">Answer!</button>
+<div id="AnswerBox"></div>
+
+@section scripts
+{
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#AnswerButton').click(function() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GiveAnswer")",
+                data: {PostId: @ViewBag.topicId}
+            }).success(function(data) {
+                $('#AnswerBox').hide();
+                $('#AnswerBox').html(data);
+                $('#AnswerBox').show(200);
+                $(".jqte").jqte();
+            });
+        });
+    })
+    </script>
+}

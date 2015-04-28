@@ -20,7 +20,11 @@ namespace QAgoraForum.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Index(int id)
         {
-            return View(respository.GetPosts(id));
+            var posts = respository.GetPosts(id);
+            var firstPost=posts.First();
+            ViewBag.Title = firstPost.Title;
+            ViewBag.topicId = firstPost.Id;
+            return View(posts);
 
         }
 
@@ -39,7 +43,7 @@ namespace QAgoraForum.Controllers
         // Aby uzyskać więcej szczegółów, zobacz http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Topic topic, int sectionId)
+        public async Task<ActionResult> Create(Post topic, int sectionId)
         {            
             string owner = User.Identity.GetUserId();
             respository.createNewTopic(topic, sectionId, owner);
@@ -53,7 +57,7 @@ namespace QAgoraForum.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Topic topic = respository.GetTopic(id.Value);
+            Post topic = respository.GetTopic(id.Value);
             if (topic == null)
             {
                 return HttpNotFound();
@@ -66,7 +70,7 @@ namespace QAgoraForum.Controllers
         // Aby uzyskać więcej szczegółów, zobacz http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Permision,Date,IsOpen,PrimaryPost")] Topic topic)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Permision,Date,IsOpen,PrimaryPost")] Post topic)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +87,7 @@ namespace QAgoraForum.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Topic topic = respository.GetTopic(id.Value);
+            Post topic = respository.GetTopic(id.Value);
             if (topic == null)
             {
                 return HttpNotFound();
@@ -103,6 +107,20 @@ namespace QAgoraForum.Controllers
         public PartialViewResult userInfo(string userId)
         {
             return PartialView(respository.getUser(userId));
+        }
+
+        public PartialViewResult GiveAnswer(int PostId)
+        {
+            Post answer = new Post {AnswerFor = PostId, Title = "RE: " + respository.GetTopic(PostId).Title };
+            return PartialView(answer);
+        }
+
+        [HttpPost]
+        public ActionResult GiveAnswer(Post answerPost)
+        {
+            answerPost.Date = DateTime.Now;
+            respository.CreateAnswer(answerPost,User.Identity.GetUserId());
+            return RedirectToAction("Index", new {id = answerPost.AnswerFor});
         }
     }
 }
