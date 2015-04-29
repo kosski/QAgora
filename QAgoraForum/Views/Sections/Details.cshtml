@@ -26,7 +26,7 @@
             foreach (Post item in Model)
             {
                 <tr class="clickable-row" data-herf=@Url.Action("Index", "Topics", new {Id = item.Id})>
-                    <td><img src=@("/DefaultLayout/Avatars/" + @item.Owner.UserName + "-avatar.jpg") class="img-circle img-responsive"/></td>
+                    <td><img src=@("/DefaultLayout/Avatars/" + @item.Owner.UserName + "-avatar.jpg") class="img-circle img-responsive" style="max-height: 40px; max-width: 40px"/></td>
                     <td>@item.Title</td>
                     <td></td>
                 </tr>

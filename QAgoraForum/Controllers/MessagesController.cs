@@ -61,5 +61,14 @@ namespace QAgoraForum.Controllers
             return PartialView();
         }
 
+        [Authorize]
+        public PartialViewResult _ReadFromNavbar(int messageId)
+        {
+            var result= respository.getMessage(messageId);
+            respository.ReadMessage(messageId);
+            return PartialView(result);
+        }
+
+
     }
 }
