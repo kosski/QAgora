@@ -12,17 +12,27 @@
 
     $(".jqte").jqte();
 
+
+
+
+
     $('#mailNotify').click(function () {
-        var url = $(this).val("messageId");
-        $.ajax({
-            type: "GET",
-            url: '/Messages/_ReadFromNavbar',
-            data: {messageId: url}
-        }).success(function (data) {
-            $("#modalPlace").html(data);
-        });
+        var nfo = { messageId: $(this).attr("messageId") };
+        AjaxRequest("GET", '/Messages/_ReadFromNavbar', nfo, showModalmessage);
+    });
 
-
+}
+    function showModalmessage(data) {
+        $("#modalPlace").html(data);
+        $("#modal").modal("show");
+    }
+function AjaxRequest(type,url,data,onSuccess) {
+    $.ajax({
+        type: type,
+        url: url,
+        data: data
+    }).success(function (data) {
+        onSuccess(data);
     });
 }
 
