@@ -173,6 +173,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -193,13 +194,13 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="DefaultLayout\arrow-up.png" />
-    <Content Include="DefaultLayout\Avatars\Admin-avatar.jpg" />
-    <Content Include="DefaultLayout\Avatars\default.jpg" />
-    <Content Include="DefaultLayout\background.jpeg" />
-    <Content Include="DefaultLayout\line-icon-hover.png" />
-    <Content Include="DefaultLayout\line-icon.png" />
-    <Content Include="DefaultLayout\logo.jpg" />
+    <Content Include="Engine\DefaultLayout\arrow-up.png" />
+    <Content Include="Engine\DefaultLayout\Avatars\Admin-avatar.jpg" />
+    <Content Include="Engine\DefaultLayout\Avatars\default.jpg" />
+    <Content Include="Engine\DefaultLayout\background.jpeg" />
+    <Content Include="Engine\DefaultLayout\line-icon-hover.png" />
+    <Content Include="Engine\DefaultLayout\line-icon.png" />
+    <Content Include="Engine\DefaultLayout\logo.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -275,6 +276,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="TopicsStorage\" />
+    <Folder Include="Views\AdminPanel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

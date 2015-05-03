@@ -42,30 +42,7 @@ namespace QAgoraForum.Models
         }
 
         //
-        public string GetRole(int roleId)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return GetRole(dbContext, roleId);
-            }
-        }
-        //
-        public int GetUserRole(string userId)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return GetUserRole(dbContext, userId);
-            }
 
-        }
-        //
-        public List<IdentityRole> GetRoles()
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return GetRoles(dbContext);
-            }
-        }
         #endregion
 
         #region CXUser
@@ -79,23 +56,7 @@ namespace QAgoraForum.Models
             return context.Users.Where(u => u.UserName.Contains(some)).ToList();
         }
 
-        public string GetRole(ApplicationDbContext context, int roleId)
-        {
-            var id = roleId.ToString();
-            return context.Roles.Find(id).Name;
-        }
 
-        public int GetUserRole(ApplicationDbContext context, string userId)
-        {
-            AccountController account = new AccountController();
-            var role = account.UserManager.GetRoles(userId).FirstOrDefault();
-            return Convert.ToInt32(context.Roles.FirstOrDefault(r => r.Name.Equals(role)).Id);
-        }
-
-        public List<IdentityRole> GetRoles(ApplicationDbContext context)
-        {
-            return context.Roles.ToList();
-        }
 
         #endregion
 
@@ -468,6 +429,104 @@ namespace QAgoraForum.Models
             return true;
 
         }
+        #endregion
+
+        #region Roles
+
+
+        public bool AddRole(IdentityRole newRole)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return AddRole(dbContext,newRole);
+            }
+        }
+
+        public bool RemoveRole(string roleId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return RemoveRole(dbContext,roleId);
+            }
+        }
+
+        public string GetRole(int roleId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return GetRole(dbContext, roleId);
+            }
+        }
+
+        public int GetUserRole(string userId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return GetUserRole(dbContext, userId);
+            }
+        }
+
+        public List<IdentityRole> GetUserRoles(string userId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return GetUserRoles(dbContext, userId);
+            }
+        }
+
+        public List<IdentityRole> GetRoles()
+        {
+            using (var dbContext=new ApplicationDbContext())
+            {
+                return GetRoles(dbContext);
+            }
+        }
+
+        #endregion
+
+        #region CXRoles
+
+        private bool AddRole(ApplicationDbContext dbContext,IdentityRole newRole)
+        {
+            dbContext.Roles.Add(newRole);
+            dbContext.SaveChanges();
+            return true;
+        }
+
+        private bool RemoveRole(ApplicationDbContext dbContext, string roleId)
+        {
+            dbContext.Roles.Remove(dbContext.Roles.Find(roleId));
+            dbContext.SaveChanges();
+            return true;
+        }
+
+        public string GetRole(ApplicationDbContext context, int roleId)
+        {
+            var id = roleId.ToString();
+            return context.Roles.Find(id).Name;
+        }
+
+        public int GetUserRole(ApplicationDbContext context, string userId)
+        {
+            AccountController account = new AccountController();
+            var role = account.UserManager.GetRoles(userId).FirstOrDefault();
+            return Convert.ToInt32(context.Roles.FirstOrDefault(r => r.Name.Equals(role)).Id);
+        }
+
+        private List<IdentityRole> GetUserRoles(ApplicationDbContext context, string userId)
+        {
+            var userRolesId = getUser(context, userId).Roles.Select(r => r.RoleId).ToList();
+            var roles = GetRoles(context);
+            return roles.Where(role=>userRolesId.Any(r=>r.Equals(role.Id))).ToList();               
+        }
+
+        public List<IdentityRole> GetRoles(ApplicationDbContext context)
+        {
+            return context.Roles.ToList();
+        }
+
+
+
         #endregion
     }
 }
