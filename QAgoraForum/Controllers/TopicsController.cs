@@ -13,7 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace QAgoraForum.Controllers
 {
-    [Authorize]
+    [Authorize]//lolo
     public class TopicsController : Controller
     {
         Respository respository= new Respository();
