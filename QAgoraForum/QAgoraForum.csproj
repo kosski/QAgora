@@ -194,6 +194,13 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="DefaultLayout\Avatars\Admin-avatar.jpg" />
+    <Content Include="DefaultLayout\Avatars\default.jpg" />
+    <Content Include="DefaultLayout\Avatars\default.png" />
+    <Content Include="DefaultLayout\Avatars\dfgh-avatar.jpg" />
+    <Content Include="DefaultLayout\Avatars\Dupa-avatar.jpg" />
+    <Content Include="DefaultLayout\Avatars\Konrad-avatar.jpg" />
+    <Content Include="DefaultLayout\Avatars\test.jpg" />
     <Content Include="Engine\DefaultLayout\arrow-up.png" />
     <Content Include="Engine\DefaultLayout\Avatars\Admin-avatar.jpg" />
     <Content Include="Engine\DefaultLayout\Avatars\default.jpg" />
@@ -272,6 +279,9 @@
     <Content Include="Views\Topics\Edit.cshtml" />
     <Content Include="Views\Topics\Index.cshtml" />
     <Content Include="Views\Search\FindUser.cshtml" />
+    <Content Include="Views\Topics\GiveAnswer.cshtml" />
+    <Content Include="Views\Topics\userInfo.cshtml" />
+    <Content Include="Views\Messages\_ReadFromNavbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

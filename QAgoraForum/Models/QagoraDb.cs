@@ -50,6 +50,20 @@ namespace QAgoraForum.Models
         public virtual Section SectionId { get; set; }
     }
 
+    public class Post
+    {
+        public int Id { get; set; }
+        public int Permision { get; set; }
+        public string Title { get; set; }
+        public DateTime? Date { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
+        [AllowHtml]
+        public string content { get; set; }
+        public virtual List<Post> Answers { get; set; }
+        public virtual int AnswerFor { get; set; }
+        public virtual Section SectionId { get; set; }
+    }
+
     [Serializable]
     public class XmlPost
     {
