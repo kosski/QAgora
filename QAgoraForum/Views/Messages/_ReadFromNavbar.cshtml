@@ -1,0 +1,19 @@
+﻿@model QAgoraForum.Models.Message
+<div class="panel panel-default">
+    <div class="panel-title row">
+        <span class="glyphicon glyphicon-pencil col-md-1"></span>
+        <div class="col-md-10"><h5>Wiadomość od @Model.From :</h5>@Model.Title</div>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-2">
+            <img alt="" class="row" src=@Url.Content("/DefaultLayout/Avatars/" + @Model.From + "-avatar.jpg") style="max-height: 80px; max-width: 80px">
+        </div>
+        <div class="col-md-10 well" style="min-height: 80px">
+            @Html.Raw(Model.content)
+        </div>
+
+    </div>
+    <div id="WriteAnswer" class="panel-footer">
+        <button id="ButtonMAnswer" messageId="@Model.Id" class="btn btn-default">Answer!</button>
+    </div>
+</div>

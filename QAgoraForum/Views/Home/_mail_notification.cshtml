@@ -16,7 +16,7 @@
     {
         foreach (var item in Model)
         {
-            <li id="mailNotify" class="hvr-sweep-to-bottom">
+            <li id="mailNotify" messageId="@item.Id" class="hvr-sweep-to-bottom">
                 <div style="font-weight: bold;">@item.From</div>
                 <div>@item.content ...</div> 
             </li>
