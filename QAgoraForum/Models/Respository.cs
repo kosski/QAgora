@@ -25,7 +25,7 @@ namespace QAgoraForum.Models
         //
         public ApplicationUser getUser(string userId)
         {
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
+            using (var dbContext = new ApplicationDbContext())
             {
                 return getUser(dbContext, userId);
             }
@@ -71,7 +71,7 @@ namespace QAgoraForum.Models
         #region CXUser
         private ApplicationUser getUser(ApplicationDbContext context, string userId)
         {
-            return context.Users.Find(userId);
+            return context.Users.Include(u => u.TopicsOwner).First(u => u.Id.Equals(userId));
         }
 
         private List<ApplicationUser> SearchUsers(ApplicationDbContext context, string some)
@@ -87,7 +87,7 @@ namespace QAgoraForum.Models
 
         public int GetUserRole(ApplicationDbContext context, string userId)
         {
-            AccountController account = new AccountController();
+            var account = new AccountController();
             var role = account.UserManager.GetRoles(userId).FirstOrDefault();
             return Convert.ToInt32(context.Roles.FirstOrDefault(r => r.Name.Equals(role)).Id);
         }
@@ -107,7 +107,7 @@ namespace QAgoraForum.Models
         /// <returns></returns>
         public List<Message> GetIncomingMessages(string userId)
         {
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
+            using (var dbContext = new ApplicationDbContext())
             {
                 return GetIncomingMessages(dbContext, userId);
             }
@@ -120,23 +120,39 @@ namespace QAgoraForum.Models
         /// <returns></returns>
         public List<Message> GetSendedMessages(string userId)
         {
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
+            using (var dbContext = new ApplicationDbContext())
             {
                 return GetSendedMessages(dbContext, userId);
             }
         }
 
+        public Message getMessage(int messageId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return this.getMessage(dbContext, messageId);
+            }
+        }
+
         public bool AddMessage(Message newMessage)
         {
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
+            using (var dbContext = new ApplicationDbContext())
             {
                 return AddMessage(dbContext, newMessage);
             }
         }
 
+        public bool AddMessage(Message newMessage,int answerFor)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return AddMessage(dbContext, newMessage,answerFor);
+            }
+        }
+
         public bool ReadMessage(int messageId)
         {
-            using (ApplicationDbContext dbContext = new ApplicationDbContext())
+            using (var dbContext = new ApplicationDbContext())
             {
                 return ReadMessage(dbContext, messageId);
             }
@@ -177,6 +193,14 @@ namespace QAgoraForum.Models
             return SecureMessages(dbContext, result);
         }
 
+        private Message getMessage(ApplicationDbContext dbContext, int messageId)
+        {
+            var result = dbContext.Messages.Find(messageId);
+            result.From = dbContext.Users.Find(result.From).UserName;
+            return result;
+        }
+
+
         /// <summary>
         /// Making messages secure
         /// </summary>
@@ -198,6 +222,24 @@ namespace QAgoraForum.Models
                 newMessage.Reciver = dbContext
                     .Users
                     .FirstOrDefault(u => u.Id.Equals(newMessage.Reciver.Id));
+                dbContext.Messages.Add(newMessage);
+                dbContext.SaveChanges();
+                return true;
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                return false;
+            }
+        }
+
+        private bool AddMessage(ApplicationDbContext dbContext, Message newMessage, int answerFor)
+        {
+            try
+            {
+                
+                newMessage.AnswerFor = dbContext.Messages.Find(answerFor);
+                newMessage.Reciver = dbContext.Users.Find(newMessage.AnswerFor.From);
+                newMessage.Title = "RE: " + newMessage.AnswerFor.Title;
                 dbContext.Messages.Add(newMessage);
                 dbContext.SaveChanges();
                 return true;
@@ -315,7 +357,7 @@ namespace QAgoraForum.Models
         private bool DeleteSection(ApplicationDbContext dbContext, int id)
         {
 
-            Section section = dbContext.Sections.Find(id);
+            var section = dbContext.Sections.Find(id);
             dbContext.Sections.Remove(section);
             dbContext.SaveChanges();
             return true;
@@ -372,7 +414,7 @@ namespace QAgoraForum.Models
 
         #region Topics
 
-        public List<XmlPost> GetPosts(int id)
+        public List<Post> GetPosts(int id)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -380,7 +422,7 @@ namespace QAgoraForum.Models
             }
         }
 
-        public bool createNewTopic(Topic topic, int sectionId, string userId)
+        public bool createNewTopic(Post topic, int sectionId, string userId)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -389,7 +431,7 @@ namespace QAgoraForum.Models
 
         }
 
-        public Topic GetTopic(int Id)
+        public Post GetTopic(int Id)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -397,7 +439,7 @@ namespace QAgoraForum.Models
             }
         }
 
-        public bool EditTopic(Topic topic)
+        public bool EditTopic(Post topic)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -410,34 +452,44 @@ namespace QAgoraForum.Models
         {
             using (var dbContext = new ApplicationDbContext())
             {
-                Topic topic = await dbContext.Topics.FindAsync(id);
+                var topic = await dbContext.Topics.FindAsync(id);
                 dbContext.Topics.Remove(topic);
                 await dbContext.SaveChangesAsync();
                 return true;
             }
         }
+
+        public bool CreateAnswer(Post answer,string userId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return this.CreateAnswer(dbContext, answer,userId);
+            }   
+        }
+
         #endregion
 
 
         #region CXTopics
 
-        private List<XmlPost> GetPosts(ApplicationDbContext dbContext, int id)
+        private List<Post> GetPosts(ApplicationDbContext dbContext, int id)
         {
-            var topicInfo = dbContext.Topics.Find(id);
-            return XmlPost.getPosts(id);
+            var firstPost = dbContext.Posts.Include(p => p.Owner).First(p => p.Id == id);
+            List<Post> result= new List<Post>();
+            result.Add(firstPost);
+            result.AddRange(firstPost.Answers.OrderByDescending(p=>p.Date));
+            return result;
         }
 
-        private bool createNewTopic(ApplicationDbContext dbContext, Topic topic, int sectionId, string userId)
+        private bool createNewTopic(ApplicationDbContext dbContext, Post topic, int sectionId, string userId)
         {
             try
             {
-                topic.Owner = dbContext.Users.Find(userId);
-                topic.IsOpen = true;
-                topic.SectionId = this.GetSection(dbContext, sectionId);
+                topic.Answers= null;
                 topic.Date = DateTime.Now;
-                dbContext.Topics.Add(topic);
-                XmlPost newTopic = new XmlPost { id = topic.Id, Date = DateTime.Now, Owner = userId, content = topic.PrimaryPost };
-                XmlPost.addPost(newTopic, topic.Id);
+                topic.Owner = dbContext.Users.Find(userId);
+                topic.SectionId = dbContext.Sections.Find(sectionId);
+                dbContext.Posts.Add(topic);
                 dbContext.SaveChanges();
                 return true;
             }
@@ -455,18 +507,26 @@ namespace QAgoraForum.Models
             return false;
         }
 
-        private Topic GetTopic(ApplicationDbContext dbContext, int Id)
+        private Post GetTopic(ApplicationDbContext dbContext, int Id)
         {
-            return dbContext.Topics.Find(Id);
+            return dbContext.Posts.Find(Id);
         }
 
-        private bool EditTopic(ApplicationDbContext dbContext, Topic topic)
+        private bool EditTopic(ApplicationDbContext dbContext, Post topic)
         {
 
             dbContext.Entry(topic).State = EntityState.Modified;
             dbContext.SaveChanges();
             return true;
 
+        }
+
+        private bool CreateAnswer(ApplicationDbContext dbContext, Post answer,string userId)
+        {
+            answer.Owner = this.getUser(dbContext, userId);
+            dbContext.Posts.Find(answer.AnswerFor).Answers.Add(answer);
+            dbContext.SaveChanges();
+            return true;
         }
         #endregion
     }

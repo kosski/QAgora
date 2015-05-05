@@ -69,6 +69,23 @@ namespace QAgoraForum.Controllers
             return PartialView(result);
         }
 
+        [Authorize, HttpGet]
+        public PartialViewResult _AnswerForm(int messageId)
+        {
+            ViewBag.IsPost = false;
+            ViewBag.messageId = messageId;
+            return PartialView();
+        }
+        [Authorize, HttpPost]
+        public PartialViewResult _AnswerForm(Message message,int answerFor)
+        {
+            message.SendDate = DateTime.Now;
+            message.From = User.Identity.GetUserId();
+            ViewBag.IsPost = respository.AddMessage(message,answerFor);
+            return PartialView();
+        }
+
+
 
     }
 }
