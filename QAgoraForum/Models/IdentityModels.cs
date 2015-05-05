@@ -19,6 +19,7 @@ namespace QAgoraForum.Models
         public DbSet<Message>  Messages { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Topic> Topics { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<SectionPanel> SectionPanels { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema:false)

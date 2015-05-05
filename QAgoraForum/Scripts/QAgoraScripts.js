@@ -22,11 +22,23 @@
     });
 
 }
-    function showModalmessage(data) {
-        $("#modalPlace").html(data);
-        $("#modal").modal("show");
-    }
-function AjaxRequest(type,url,data,onSuccess) {
+function showModalmessage(data) {
+    $("#modalPlace").html(data);
+    $('#ButtonMAnswer').click(function () {
+        var nfo = { messageId: $(this).attr("messageId") };
+        AjaxRequest("GET", "/Messages/_AnswerForm", nfo, showAnswerForm);
+    })
+    $("#modal").modal("show");
+}
+
+function showAnswerForm(data) {
+    $("#WriteAnswer").hide();
+    $("#WriteAnswer").html(data);
+    $(".jqte").jqte();
+    $("#WriteAnswer").show(400);
+}
+
+function AjaxRequest(type, url, data, onSuccess) {
     $.ajax({
         type: type,
         url: url,

@@ -282,6 +282,7 @@
     <Content Include="Views\Topics\GiveAnswer.cshtml" />
     <Content Include="Views\Topics\userInfo.cshtml" />
     <Content Include="Views\Messages\_ReadFromNavbar.cshtml" />
+    <Content Include="Views\Messages\_AnswerForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
