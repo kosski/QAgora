@@ -16,21 +16,10 @@ namespace QAgoraForum.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult FindUser()
-        {
-            return this.View();
-
-        }
-
         [HttpPost]
-        public ActionResult FindUser(string userName)
+        public PartialViewResult FindUser(string fraze="")
         {
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                return this.View();
-            }
-            return View(respository.getUser(userName));
+            return PartialView(respository.SearchUsers(fraze));
         }
     }
 }

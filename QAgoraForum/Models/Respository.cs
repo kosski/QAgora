@@ -25,7 +25,7 @@ namespace QAgoraForum.Models
         //
         public ApplicationUser getUser(string userId)
         {
-            using (var dbContext = new ApplicationDbContext())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 return getUser(dbContext, userId);
             }
@@ -42,36 +42,13 @@ namespace QAgoraForum.Models
         }
 
         //
-        public string GetRole(int roleId)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return GetRole(dbContext, roleId);
-            }
-        }
-        //
-        public int GetUserRole(string userId)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return GetUserRole(dbContext, userId);
-            }
 
-        }
-        //
-        public List<IdentityRole> GetRoles()
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return GetRoles(dbContext);
-            }
-        }
         #endregion
 
         #region CXUser
         private ApplicationUser getUser(ApplicationDbContext context, string userId)
         {
-            return context.Users.Include(u => u.TopicsOwner).First(u => u.Id.Equals(userId));
+            return context.Users.Find(userId);
         }
 
         private List<ApplicationUser> SearchUsers(ApplicationDbContext context, string some)
@@ -79,23 +56,7 @@ namespace QAgoraForum.Models
             return context.Users.Where(u => u.UserName.Contains(some)).ToList();
         }
 
-        public string GetRole(ApplicationDbContext context, int roleId)
-        {
-            var id = roleId.ToString();
-            return context.Roles.Find(id).Name;
-        }
 
-        public int GetUserRole(ApplicationDbContext context, string userId)
-        {
-            var account = new AccountController();
-            var role = account.UserManager.GetRoles(userId).FirstOrDefault();
-            return Convert.ToInt32(context.Roles.FirstOrDefault(r => r.Name.Equals(role)).Id);
-        }
-
-        public List<IdentityRole> GetRoles(ApplicationDbContext context)
-        {
-            return context.Roles.ToList();
-        }
 
         #endregion
 
@@ -107,7 +68,7 @@ namespace QAgoraForum.Models
         /// <returns></returns>
         public List<Message> GetIncomingMessages(string userId)
         {
-            using (var dbContext = new ApplicationDbContext())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 return GetIncomingMessages(dbContext, userId);
             }
@@ -120,39 +81,23 @@ namespace QAgoraForum.Models
         /// <returns></returns>
         public List<Message> GetSendedMessages(string userId)
         {
-            using (var dbContext = new ApplicationDbContext())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 return GetSendedMessages(dbContext, userId);
             }
         }
 
-        public Message getMessage(int messageId)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return this.getMessage(dbContext, messageId);
-            }
-        }
-
         public bool AddMessage(Message newMessage)
         {
-            using (var dbContext = new ApplicationDbContext())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 return AddMessage(dbContext, newMessage);
             }
         }
 
-        public bool AddMessage(Message newMessage,int answerFor)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return AddMessage(dbContext, newMessage,answerFor);
-            }
-        }
-
         public bool ReadMessage(int messageId)
         {
-            using (var dbContext = new ApplicationDbContext())
+            using (ApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 return ReadMessage(dbContext, messageId);
             }
@@ -193,14 +138,6 @@ namespace QAgoraForum.Models
             return SecureMessages(dbContext, result);
         }
 
-        private Message getMessage(ApplicationDbContext dbContext, int messageId)
-        {
-            var result = dbContext.Messages.Find(messageId);
-            result.From = dbContext.Users.Find(result.From).UserName;
-            return result;
-        }
-
-
         /// <summary>
         /// Making messages secure
         /// </summary>
@@ -222,24 +159,6 @@ namespace QAgoraForum.Models
                 newMessage.Reciver = dbContext
                     .Users
                     .FirstOrDefault(u => u.Id.Equals(newMessage.Reciver.Id));
-                dbContext.Messages.Add(newMessage);
-                dbContext.SaveChanges();
-                return true;
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                return false;
-            }
-        }
-
-        private bool AddMessage(ApplicationDbContext dbContext, Message newMessage, int answerFor)
-        {
-            try
-            {
-                
-                newMessage.AnswerFor = dbContext.Messages.Find(answerFor);
-                newMessage.Reciver = dbContext.Users.Find(newMessage.AnswerFor.From);
-                newMessage.Title = "RE: " + newMessage.AnswerFor.Title;
                 dbContext.Messages.Add(newMessage);
                 dbContext.SaveChanges();
                 return true;
@@ -357,7 +276,7 @@ namespace QAgoraForum.Models
         private bool DeleteSection(ApplicationDbContext dbContext, int id)
         {
 
-            var section = dbContext.Sections.Find(id);
+            Section section = dbContext.Sections.Find(id);
             dbContext.Sections.Remove(section);
             dbContext.SaveChanges();
             return true;
@@ -414,7 +333,7 @@ namespace QAgoraForum.Models
 
         #region Topics
 
-        public List<Post> GetPosts(int id)
+        public List<XmlPost> GetPosts(int id)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -422,7 +341,7 @@ namespace QAgoraForum.Models
             }
         }
 
-        public bool createNewTopic(Post topic, int sectionId, string userId)
+        public bool createNewTopic(Topic topic, int sectionId, string userId)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -431,7 +350,7 @@ namespace QAgoraForum.Models
 
         }
 
-        public Post GetTopic(int Id)
+        public Topic GetTopic(int Id)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -439,7 +358,7 @@ namespace QAgoraForum.Models
             }
         }
 
-        public bool EditTopic(Post topic)
+        public bool EditTopic(Topic topic)
         {
             using (var dbContext = new ApplicationDbContext())
             {
@@ -452,44 +371,34 @@ namespace QAgoraForum.Models
         {
             using (var dbContext = new ApplicationDbContext())
             {
-                var topic = await dbContext.Topics.FindAsync(id);
+                Topic topic = await dbContext.Topics.FindAsync(id);
                 dbContext.Topics.Remove(topic);
                 await dbContext.SaveChangesAsync();
                 return true;
             }
         }
-
-        public bool CreateAnswer(Post answer,string userId)
-        {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                return this.CreateAnswer(dbContext, answer,userId);
-            }   
-        }
-
         #endregion
 
 
         #region CXTopics
 
-        private List<Post> GetPosts(ApplicationDbContext dbContext, int id)
+        private List<XmlPost> GetPosts(ApplicationDbContext dbContext, int id)
         {
-            var firstPost = dbContext.Posts.Include(p => p.Owner).First(p => p.Id == id);
-            List<Post> result= new List<Post>();
-            result.Add(firstPost);
-            result.AddRange(firstPost.Answers.OrderByDescending(p=>p.Date));
-            return result;
+            var topicInfo = dbContext.Topics.Find(id);
+            return XmlPost.getPosts(id);
         }
 
-        private bool createNewTopic(ApplicationDbContext dbContext, Post topic, int sectionId, string userId)
+        private bool createNewTopic(ApplicationDbContext dbContext, Topic topic, int sectionId, string userId)
         {
             try
             {
-                topic.Answers= null;
-                topic.Date = DateTime.Now;
                 topic.Owner = dbContext.Users.Find(userId);
-                topic.SectionId = dbContext.Sections.Find(sectionId);
-                dbContext.Posts.Add(topic);
+                topic.IsOpen = true;
+                topic.SectionId = this.GetSection(dbContext, sectionId);
+                topic.Date = DateTime.Now;
+                dbContext.Topics.Add(topic);
+                XmlPost newTopic = new XmlPost { id = topic.Id, Date = DateTime.Now, Owner = userId, content = topic.PrimaryPost };
+                XmlPost.addPost(newTopic, topic.Id);
                 dbContext.SaveChanges();
                 return true;
             }
@@ -507,12 +416,12 @@ namespace QAgoraForum.Models
             return false;
         }
 
-        private Post GetTopic(ApplicationDbContext dbContext, int Id)
+        private Topic GetTopic(ApplicationDbContext dbContext, int Id)
         {
-            return dbContext.Posts.Find(Id);
+            return dbContext.Topics.Find(Id);
         }
 
-        private bool EditTopic(ApplicationDbContext dbContext, Post topic)
+        private bool EditTopic(ApplicationDbContext dbContext, Topic topic)
         {
 
             dbContext.Entry(topic).State = EntityState.Modified;
@@ -520,14 +429,104 @@ namespace QAgoraForum.Models
             return true;
 
         }
+        #endregion
 
-        private bool CreateAnswer(ApplicationDbContext dbContext, Post answer,string userId)
+        #region Roles
+
+
+        public bool AddRole(IdentityRole newRole)
         {
-            answer.Owner = this.getUser(dbContext, userId);
-            dbContext.Posts.Find(answer.AnswerFor).Answers.Add(answer);
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return AddRole(dbContext,newRole);
+            }
+        }
+
+        public bool RemoveRole(string roleId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return RemoveRole(dbContext,roleId);
+            }
+        }
+
+        public string GetRole(int roleId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return GetRole(dbContext, roleId);
+            }
+        }
+
+        public int GetUserRole(string userId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return GetUserRole(dbContext, userId);
+            }
+        }
+
+        public List<IdentityRole> GetUserRoles(string userId)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                return GetUserRoles(dbContext, userId);
+            }
+        }
+
+        public List<IdentityRole> GetRoles()
+        {
+            using (var dbContext=new ApplicationDbContext())
+            {
+                return GetRoles(dbContext);
+            }
+        }
+
+        #endregion
+
+        #region CXRoles
+
+        private bool AddRole(ApplicationDbContext dbContext,IdentityRole newRole)
+        {
+            dbContext.Roles.Add(newRole);
             dbContext.SaveChanges();
             return true;
         }
+
+        private bool RemoveRole(ApplicationDbContext dbContext, string roleId)
+        {
+            dbContext.Roles.Remove(dbContext.Roles.Find(roleId));
+            dbContext.SaveChanges();
+            return true;
+        }
+
+        public string GetRole(ApplicationDbContext context, int roleId)
+        {
+            var id = roleId.ToString();
+            return context.Roles.Find(id).Name;
+        }
+
+        public int GetUserRole(ApplicationDbContext context, string userId)
+        {
+            AccountController account = new AccountController();
+            var role = account.UserManager.GetRoles(userId).FirstOrDefault();
+            return Convert.ToInt32(context.Roles.FirstOrDefault(r => r.Name.Equals(role)).Id);
+        }
+
+        private List<IdentityRole> GetUserRoles(ApplicationDbContext context, string userId)
+        {
+            var userRolesId = getUser(context, userId).Roles.Select(r => r.RoleId).ToList();
+            var roles = GetRoles(context);
+            return roles.Where(role=>userRolesId.Any(r=>r.Equals(role.Id))).ToList();               
+        }
+
+        public List<IdentityRole> GetRoles(ApplicationDbContext context)
+        {
+            return context.Roles.ToList();
+        }
+
+
+
         #endregion
     }
 }

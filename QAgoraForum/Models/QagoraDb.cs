@@ -14,12 +14,9 @@ namespace QAgoraForum.Models
         public int Id { get; set; }
         public DateTime? SendDate { get; set; }
         public string From { get; set; }
-        public string Title { get; set; }
-        [AllowHtml]
         public string content { get; set; }
         public bool readed { get; set; }
         public virtual ApplicationUser Reciver { get; set; }
-        public virtual Message AnswerFor { get; set; }
     }
 
     public class Section
@@ -40,7 +37,6 @@ namespace QAgoraForum.Models
         public int Visibility { get; set; }
         public virtual List<Section> Sections { get; set; }
     }
-
     public class Topic
     {
         public int Id { get; set; }
@@ -49,10 +45,8 @@ namespace QAgoraForum.Models
         public DateTime? Date { get; set; }
         public virtual ApplicationUser Owner { get; set; }
         public bool IsOpen { get; set; }
-
         [AllowHtml]
         public string PrimaryPost { get; set; }
-
         public virtual Section SectionId { get; set; }
     }
 
@@ -69,8 +63,6 @@ namespace QAgoraForum.Models
         public virtual int AnswerFor { get; set; }
         public virtual Section SectionId { get; set; }
     }
-
-#region XmlPost
 
     [Serializable]
     public class XmlPost
@@ -111,7 +103,7 @@ namespace QAgoraForum.Models
             StreamWriter oStreamWriter = null;
             try
             {
-                oStreamWriter = new StreamWriter(System.Web.HttpContext.Current.Server.MapPath("~/TopicsStorage/") + topicId + ".xml");
+                oStreamWriter = new StreamWriter(System.Web.HttpContext.Current.Server.MapPath("~/TopicsStorage/")+ topicId + ".xml");
                 oSerializer.Serialize(oStreamWriter, posts);
             }
             catch (Exception oException)
@@ -143,6 +135,5 @@ namespace QAgoraForum.Models
             }
         }
     }
-    
-    #endregion
+
 }
