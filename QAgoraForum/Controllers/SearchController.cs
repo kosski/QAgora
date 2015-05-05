@@ -30,7 +30,7 @@ namespace QAgoraForum.Controllers
             {
                 return this.View();
             }
-            return View(respository.FindUser(userName));
+            return View(respository.getUser(userName));
         }
     }
 }
