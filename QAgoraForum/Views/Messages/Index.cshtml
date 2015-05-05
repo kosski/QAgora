@@ -2,68 +2,69 @@
 @{
     ViewBag.Title = "Index";
     ViewBag.activator = "panel panel-default";
-
+   
 }
 <div class="panel panel-default">
     <div class="panel-heading"> <h2>Wiadomości</h2> </div>
     <div class="panel-body">
-        @if (Model)
-        {
-            <div class="alert alert-success" role="alert">Wiadomość została wysłana</div>
-        }
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#incoming" aria-controls="incoming" role="tab" data-toggle="tab">Otrzymane</a></li>
-            <li role="presentation"><a href="#outgoing" aria-controls="outgoing" role="tab" data-toggle="tab">Wysłane</a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active" id="incoming">
-                <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="false">
-                    @foreach (QAgoraForum.Models.Message item in ViewBag.incoming)
-                    {
-                        <div id=@item.Id class="@("panel "+(!item.readed ? "panel-success" : "panel-default"))">
-                            <div class="panel-heading" role="tab" id=@("heading"+item.GetHashCode().ToString())>
-                                <div class="row">
-                                    <img src=@("/DefaultLayout/Avatars/" + @item.From + "-avatar.jpg") class="img-circle img-responsive col-md-2" style="height: 40px; width: 40px" />
-                                    <b class="col-md-2">@item.From</b>
-                                    <div class="col-md-2">@item.SendDate.Value.ToShortDateString()</div>
-                                    <div class="col-md-offset-3 col-md-3" data-toggle="collapse" data-parent="#accordion1" href=@("#"+item.GetHashCode().ToString())>
-                                        @Ajax.ActionLink("Przeczytaj", "Read", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "read" + @item.GetHashCode() }, new { Class = "btn btn-default", id = "read" + @item.GetHashCode() })
+            @if (Model)
+            {
+                <div class="alert alert-success" role="alert">Wiadomość została wysłana</div>
+            }        
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#incoming" aria-controls="incoming" role="tab" data-toggle="tab">Otrzymane</a></li>
+                <li role="presentation"><a href="#outgoing" aria-controls="outgoing" role="tab" data-toggle="tab">Wysłane</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="incoming">
+                    <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="false">
+                        @foreach (QAgoraForum.Models.Message item in ViewBag.incoming)
+                        {
+                            ViewBag.activator = !item.readed ? "panel-success" : "panel-default";
+                            <div id=@item.Id class="@("panel "+ViewBag.activator.ToString())" >
+                                <div class="panel-heading" role="tab" id=@("heading"+item.GetHashCode().ToString())>
+                                    <div class="row" >
+                                        <img src=@("/DefaultLayout/Avatars/" + @item.From + "-avatar.jpg") class="img-circle img-responsive col-md-1" style="height: 20px"/>
+                                        <b class="col-md-3">@item.From</b>
+                                        <div class="col-md-2">@item.SendDate.Value.ToShortDateString()</div>
+                                        <div class="col-md-offset-3 col-md-3" data-toggle="collapse" data-parent="#accordion1" href=@("#"+item.GetHashCode().ToString())>
+                                            @Ajax.ActionLink("Przeczytaj", "Read", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "read" }, new { Class="btn btn-default", id="read" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id=@item.GetHashCode().ToString() class="panel-collapse collapse" role="tabpanel" aria-labelledby=@("heading"+item.GetHashCode().ToString())>
+                                    <div class="panel-body">
+                                        @item.content
                                     </div>
                                 </div>
                             </div>
-                            <div id=@item.GetHashCode().ToString() class="panel-collapse collapse" role="tabpanel" aria-labelledby=@("heading"+item.GetHashCode().ToString())>
-                                <div class="panel-body well">
-                                    @item.content
-                                </div>
-                            </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="outgoing">
-                <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="false">
-                    @foreach (QAgoraForum.Models.Message item in ViewBag.outgoing)
-                    {
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id=@("heading"+item.GetHashCode().ToString())>
-                                <div class="row" data-toggle="collapse" data-parent="#accordion2" href=@("#"+item.GetHashCode().ToString()+"o")>
-                                    <img src=@("/DefaultLayout/Avatars/" + @item.Reciver.UserName + "-avatar.jpg") class="img-circle img-responsive col-md-1" style="height: 40px; width: 40px" />
-                                    <b>@item.Reciver.UserName</b>
-                                    @item.SendDate.Value.ToShortDateString()
-
+                <div role="tabpanel" class="tab-pane fade" id="outgoing">
+                    <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="false">
+                        @foreach (QAgoraForum.Models.Message item in ViewBag.outgoing)
+                        {
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id=@("heading"+item.GetHashCode().ToString())>
+                                    <div class="row" data-toggle="collapse" data-parent="#accordion2" href=@("#"+item.GetHashCode().ToString()+"o") >
+                                        <img src=@("/DefaultLayout/Avatars/" + @item.Reciver.UserName + "-avatar.jpg") class="img-circle img-responsive col-md-1" style="height: 20px" />
+                                        <b>@item.Reciver.UserName</b>
+                                        @item.SendDate.Value.ToShortDateString()
+                                        
+                                    </div>                                 
+                                </div>
+                                <div id=@(item.GetHashCode().ToString()+"o") class="panel-collapse collapse" role="tabpanel" aria-labelledby=@("heading"+item.GetHashCode().ToString())>
+                                    <div class="panel-body">
+                                        @item.content
+                                    </div>
                                 </div>
                             </div>
-                            <div id=@(item.GetHashCode().ToString()+"o") class="panel-collapse collapse" role="tabpanel" aria-labelledby=@("heading"+item.GetHashCode().ToString())>
-                                <div class="panel-body">
-                                    @Html.Raw(item.content)
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
+                 </div>
             </div>
-        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -73,8 +74,8 @@
                 $(this).parents(".panel-success").addClass("panel panel-default").removeClass("panel-success");
             });
         })
+    
 
-
-
-
+    
+            
 </script>

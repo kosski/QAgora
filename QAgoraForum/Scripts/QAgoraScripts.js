@@ -13,7 +13,7 @@
     $(".jqte").jqte();
 
 
-    
+
 
 
     $('#mailNotify').click(function () {
@@ -22,23 +22,8 @@
     });
 
 }
-
-function showAnswerForm(data) {
-    $("#WriteAnswer").hide();
-    $("#WriteAnswer").html(data);
-    $(".jqte").jqte();
-    $("#WriteAnswer").show(400);
-}
-
-
-
     function showModalmessage(data) {
         $("#modalPlace").html(data);
-        
-        $('#ButtonMAnswer').click(function() {
-            var nfo = { messageId: $(this).attr("messageId") };
-            AjaxRequest("GET", "/Messages/_AnswerForm", nfo, showAnswerForm);
-        })
         $("#modal").modal("show");
     }
 function AjaxRequest(type,url,data,onSuccess) {
