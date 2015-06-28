@@ -138,7 +138,36 @@ namespace QAgoraForum.Models
                 return new List<XmlPost>();
             }
         }
-    } 
+    }
     #endregion
 
+    public class Subscib
+    {
+        public int Id { get; set; }
+        public virtual ApplicationUser User { get; set; }
+        public virtual Topic topic { get; set; }
+    }
+
+    public class Notification
+    {
+        public int Id { get; set; }
+        public virtual Subscib Subscribe { get; set; }
+        public DateTime Date { get; set; }
+        public bool readed { get; set; }
+        public virtual NotyficationType type { get; set; }
+        public virtual List<NotificationRfr> refers { get; set; }
+    }
+
+    public class NotyficationType
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string text { get; set; }
+    }
+
+    public class NotificationRfr
+    {
+        public int Id { get; set; }
+        public virtual Topic topic { get; set; }
+    }
 }
