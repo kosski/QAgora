@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.EntityFramework;
 using QAgoraForum.Models;
+using QAgoraForum.App_Start;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace QAgoraForum.Controllers
 {
@@ -13,6 +15,16 @@ namespace QAgoraForum.Controllers
     {
         private Respository respository= new Respository();
         // GET: AdminPanel
+
+        private ApplicationRoleManager _AppRoleManager = null;
+
+        protected ApplicationRoleManager AppRoleManager
+        {
+            get
+            {
+                return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+        }
         public ActionResult Index()
         {
             return View();
