@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<kinds>
+  <!--SAMPLE-->
+  <!--<point value="" brush="" speed="" size=""/>-->
+  <point value="30" brush="./Images/apple.gif" speed="0" size="0"/>
+  <point value="15" brush="./Images/power.jpg" speed="0.5" size="0"/>
+</kinds> 

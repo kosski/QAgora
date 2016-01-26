@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Portfolio" Class="portfolioDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=USER\SQLEXPRESS;Initial Catalog=Portfolio;Persist Security Info=True;User ID=portfolio" SettingsObjectName="Gluteneria.Properties.Settings" SettingsPropertyName="PortfolioConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Ussers" Member="Ussers">
+    <Type Name="Ussers">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="password" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+    </Type>
+  </Table>
+</Database>

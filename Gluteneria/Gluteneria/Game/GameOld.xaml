@@ -1,0 +1,12 @@
+﻿<Window x:Class="Gluteneria.Game.Game"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Game" Height="900" Width="700" KeyDown="WindowKeyDown" OpacityMask="White" Foreground="{x:Null}" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <ImageBrush ImageSource="/Gluteneria;component/Images/ground.jpg"/>
+    </Window.Background>
+    <Grid>
+        <Canvas x:Name="Can" HorizontalAlignment="Left" Height="800" Margin="44,48,0,0" VerticalAlignment="Top" Width="600"/>
+
+    </Grid>
+</Window>
