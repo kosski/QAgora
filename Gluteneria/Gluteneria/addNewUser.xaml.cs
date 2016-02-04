@@ -28,7 +28,7 @@ namespace Gluteneria
                     Users user = new Users { Name = Login.Text, Pass = Pass.Password, Nick = Nick.Text };
                     db.Users.Add(user);
                     db.SaveChanges();
-                    this.Hide();
+                    this.Close();
                     MessageBox.Show("Użytkownik Zarejestrowany!");
                 }
         }
