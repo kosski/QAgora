@@ -2,6 +2,9 @@
 using Gluteneria.Data;
 using System.Windows.Documents;
 using System.Data.Linq;
+using System.Linq;
+using Gluteneria.Models;
+
 namespace Gluteneria
 {
     /// <summary>
@@ -13,19 +16,21 @@ namespace Gluteneria
 
         public AddNewUser()
         {
-            InitializeComponent();  
-           
+            InitializeComponent();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string connection= "Server=USER\\SQLEXPRESS;Database=Portfolio;User Id=portfolio;Password=1qaz!QAZ;";
-            portfolioDataContext data= new portfolioDataContext(connection);
-            Table<Ussers> lista = data.GetTable<Ussers>();
-
-            Ussers newUser = new Ussers { name = Name.Text, password = Password.Password };
-            lista.InsertOnSubmit(newUser);
-            data.SubmitChanges();
+            if (Pass.Password == Repeat.Password)
+                using (GluteneriaEntities db = new GluteneriaEntities())
+                {
+                    Users user = new Users { Name = Login.Text, Pass = Pass.Password, Nick = Nick.Text };
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    this.Hide();
+                    MessageBox.Show("Użytkownik Zarejestrowany!");
+                }
         }
     }
 

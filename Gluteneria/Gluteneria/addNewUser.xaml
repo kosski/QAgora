@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="addNewUser" Height="300" Width="300">
     <Grid Background="Black">
-        <Button Content="RegIster!" HorizontalAlignment="Left" Margin="102,175,0,0" VerticalAlignment="Top" Width="105" Height="43" Click="Button_Click"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="35,27,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
-        <TextBox x:Name="Name" HorizontalAlignment="Left" Height="23" Margin="148,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+        <Button Content="RegIster!" HorizontalAlignment="Left" Margin="94,217,0,0" VerticalAlignment="Top" Width="105" Height="43" Click="Button_Click"/>
+        <Label Content="Nick" HorizontalAlignment="Left" Margin="35,27,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
+        <TextBox x:Name="Nick" HorizontalAlignment="Left" Height="23" Margin="148,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -15,9 +15,9 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="35,77,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
-        <Label Content="Again" HorizontalAlignment="Left" Margin="35,119,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
-        <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="148,85,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+        <Label Content="Password" HorizontalAlignment="Left" Margin="27,119,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
+        <Label Content="Again" HorizontalAlignment="Left" Margin="27,161,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
+        <PasswordBox x:Name="Pass" HorizontalAlignment="Left" Margin="140,127,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
             <PasswordBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -27,7 +27,7 @@
                 </TransformGroup>
             </PasswordBox.RenderTransform>
         </PasswordBox>
-        <PasswordBox x:Name="Repeat" HorizontalAlignment="Left" Margin="148,129,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+        <PasswordBox x:Name="Repeat" HorizontalAlignment="Left" Margin="140,171,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
             <PasswordBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -37,5 +37,16 @@
                 </TransformGroup>
             </PasswordBox.RenderTransform>
         </PasswordBox>
+        <Label Content="Login" HorizontalAlignment="Left" Margin="35,77,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold" FontSize="20"/>
+        <TextBox x:Name="Login" HorizontalAlignment="Left" Height="23" Margin="148,91,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-32.619"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="7.36"/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
     </Grid>
 </Window>

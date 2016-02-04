@@ -9,10 +9,12 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using Gluteneria.Game.Interfaces;
-using Gluteneria.MVC.elements;
+//using Gluteneria.Game.Interfaces;
+//using Gluteneria.MVC.elements;
 using System.Reflection;
 using System.Windows.Documents;
+using Gluteneria.Game.Interfaces;
+using Gluteneria.MVC.elements;
 
 namespace Gluteneria.Game
 {

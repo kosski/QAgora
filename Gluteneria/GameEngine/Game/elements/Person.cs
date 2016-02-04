@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
+//using System.Windows.Shapes;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using GameEngine.Game;
@@ -10,11 +10,9 @@ using GameEngine.Game.Interfaces;
 
 namespace GameEngine.elements
 {
-
-
     public abstract class AbstractPlayer : Element, IPlayer
     {
-        protected Dictionary<int, Brush> Graphs = Images.PacmanYellow;
+        //protected Dictionary<int, Brush> Graphs = Images.PacmanYellow;
         public int Lives { get; protected set; }
         public int Score { get; protected set; }
         protected int Counter = 0, ModTime = 0;
@@ -48,7 +46,7 @@ namespace GameEngine.elements
         }
         private void RectFill()
         {
-            Rect.Fill = Counter > 7 ? Graphs[Dir.Side - 1] : Graphs[Dir.Side + 3];
+            //Rect.Fill = Counter > 7 ? Graphs[Dir.Side - 1] : Graphs[Dir.Side + 3];
         }
 
         public abstract void MoveUpdate();

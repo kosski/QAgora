@@ -2,6 +2,7 @@
 using Gluteneria.Game;
 using System;
 using System.Data.Linq;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -23,10 +24,12 @@ namespace Gluteneria
         private void LogIn_Click(object sender, RoutedEventArgs e)
         {
 
-                _name = User.GetLineText(0);
+            _name = User.GetLineText(0);
+            if (Connect())
                 Animation(Men);
+            else
+                MessageBox.Show("Login Denied");
 
-            
         }
 
         private void Animation(Grid grd)
@@ -40,23 +43,25 @@ namespace Gluteneria
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-
-
-
-            Game.GameWindow game = new Game.GameWindow(new UserInfo(_name,3));
+            Game.GameWindow game = new Game.GameWindow(new UserInfo(_name, 3));
             game.Show();
         }
 
 
         private bool Connect()
         {
-            string connection = "Server=USER\\SQLEXPRESS;Database=Portfolio;User Id=portfolio;Password=1qaz!QAZ;";
-            portfolioDataContext data = new portfolioDataContext(connection);
-            Table<Ussers> lista = data.GetTable<Ussers>();
-            foreach (Ussers user in lista)
-                if (user.name.Equals(User.Text) && user.password.Equals(Pass.Password)) return true;
-            return false;
-            
+            using (GluteneriaEntities db = new GluteneriaEntities())
+            {
+                Users user = db.Users.FirstOrDefault(u => u.Nick == User.Text);
+                if (user == null)
+                {
+                    MessageBox.Show("User does not exist");
+                    return false;
+                }
+                return user.Pass == Pass.Password;
+            }
+
+
         }
         private void Highscores_Click(object sender, RoutedEventArgs e)
         {

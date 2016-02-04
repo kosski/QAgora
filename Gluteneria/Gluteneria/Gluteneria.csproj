@@ -61,6 +61,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -78,12 +80,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="addNewUser.xaml.cs">
-      <DependentUpon>addNewUser.xaml</DependentUpon>
-    </Compile>
     <Page Include="addNewUser.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Game\EndScreen.xaml">
       <SubType>Designer</SubType>
@@ -105,27 +104,59 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="addNewUser.xaml.cs">
+      <DependentUpon>addNewUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\portfolio.cs">
-      <DependentUpon>portfolio.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Data\portfolio.designer.cs">
+    <Compile Include="Data\Baza.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>portfolio.dbml</DependentUpon>
+      <DependentUpon>Baza.Context.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\Baza.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Baza.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Baza.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Baza.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\highscores.cs">
+      <DependentUpon>Baza.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Users.cs">
+      <DependentUpon>Baza.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Colides.cs" />
+    <Compile Include="Game\direction.cs" />
+    <Compile Include="Game\elements\Apple.cs" />
+    <Compile Include="Game\elements\Bot.cs" />
+    <Compile Include="Game\elements\Element.cs" />
+    <Compile Include="Game\elements\ElementsArgs.cs" />
+    <Compile Include="Game\elements\EventsController.cs" />
+    <Compile Include="Game\elements\Images.cs" />
+    <Compile Include="Game\elements\Person.cs" />
+    <Compile Include="Game\elements\PlayerController.cs" />
+    <Compile Include="Game\elements\PointControler.cs" />
+    <Compile Include="Game\elements\Walls.cs" />
     <Compile Include="Game\EndScreen.xaml.cs">
       <DependentUpon>EndScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Game\Extensions.cs" />
+    <Compile Include="Game\GameSettings.cs" />
     <Compile Include="Game\GameStart.xaml.cs">
       <DependentUpon>GameStart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Game\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Game\Interfaces\ElementContainerLogic.cs" />
+    <Compile Include="Game\SingleplayerEngine.cs" />
     <Compile Include="Models\ApplicatonDbContext.cs" />
     <Compile Include="Game\UserInfo.xaml.cs">
       <DependentUpon>UserInfo.xaml</DependentUpon>
@@ -149,17 +180,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Data\portfolio.dbml.layout">
-      <DependentUpon>portfolio.dbml</DependentUpon>
-    </None>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Data\portfolio.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>portfolio.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+    <EntityDeploy Include="Data\Baza.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Baza.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Data\Baza.edmx.diagram">
+      <DependentUpon>Baza.edmx</DependentUpon>
     </None>
     <None Include="Images\pacman\Thumbs.db" />
     <None Include="packages.config" />
@@ -225,10 +255,26 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\power.gif" />
     <Resource Include="Images\power.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Game\elements\PointKinds.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Baza.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Baza.edmx</DependentUpon>
+      <LastGenOutput>Baza.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\Baza.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Baza.edmx</DependentUpon>
+      <LastGenOutput>Baza.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
